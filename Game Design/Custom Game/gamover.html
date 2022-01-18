@@ -1,0 +1,30 @@
+<html>
+<head>
+<title> Custom Game </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",500,400);
+
+var gameover_txt = new sjs.Text("Oh no! Looks like you lost. Play another round?", 28, "lightblue");
+
+gameover_txt.centerH().offset(0,85);
+
+var startBtn = new sjs.Button("Restart", function(){
+window.location = "index.html";
+});
+
+startBtn.center();
+
+var score_txt = new sjs.Text("Your Score: ", 21, "black");
+score_txt.setText("Score: "+localStorage.getItem("score"));
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> Custom Game </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>

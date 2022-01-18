@@ -1,0 +1,144 @@
+<html>
+<head>
+<title> Custom Game </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+
+sjs.open("target",600,500);
+
+//Background Music and properties
+var playM = new Audio('Music/mountain.mp3');
+var toggle = true;
+var musicOn = false;
+sjs.keyDown(SPACE_KEY, function(){
+  if (toggle == true){
+      if(musicOn == false){
+        playM.play();
+        musicOn = true;
+      } else {
+        playM.pause();
+        musicOn = false;
+      }
+      toggle = false;
+      setTimeout(function(){
+        toggle = true;
+      },1000);
+  }
+});
+
+
+var background = new sjs.Image("Images/background.png");
+background.setSize(2500,500);
+
+
+//Player Properties 
+var player = new sjs.Image("Images/l_girl-0.png");
+player.type = "player";
+player.setSize(85,93);
+player.bottom();
+player.friction = .3;
+player.noBounds = true;
+
+sjs.scrollable(player,background);
+
+//Player Controls
+var r_images = ["Images/r_girl-0.png", "Images/r_girl-1.png", "Images/r_girl-2.png", "Images/r_girl-3.png", "Images/r_girl-4.png", "Images/r_girl-5.png", "Images/r_girl-6.png", "Images/r_girl-7.png"];
+
+var l_images = ["Images/l_girl-0.png", "Images/l_girl-1.png", "Images/l_girl-2.png", "Images/l_girl-3.png", "Images/l_girl-4.png", "Images/l_girl-5.png", "Images/l_girl-6.png", "Images/l_girl-7.png"];
+
+var r_facing = true;
+var r_track = 0;
+var l_track = 0;
+
+sjs.keyDown(RIGHT_KEY ,function(){
+  r_facing = true;
+  r_track = r_track + 1;
+  player.pushRight(2);
+  player.setImage(r_images[r_track]);
+  if(r_track == 7){
+    r_track = 0;
+  }
+});
+
+  sjs.keyDown(LEFT_KEY, function(){
+  r_facing = false;
+  l_track = l_track + 1;
+  player.pushLeft(2);
+  player.setImage(l_images[l_track]);
+  if(l_track == 7){
+    l_track = 0;
+  }
+});
+
+//Power Up
+  setInterval(function(){
+  var x = Math.floor(Math.random() * 601);
+  var y = Math.floor(Math.random() * 501);
+  var powerUp = new sjs.Image("Images/coin.png");
+  powerUp.type = "powerUp";
+  powerUp.setGravity();
+  powerUp.setSize(30,30);
+  powerUp.noBounds = true;
+  powerUp.moveTo(x, y);
+  powerUp.friction = .2;
+},2000);
+
+ sjs.onHit("powerUp","bottom_screen", function(x,y){
+	x.destroy();
+});
+
+sjs.onHit("player","powerUp",function(x,y){
+	y.destroy();
+	score = score + 1;
+  score_txt.setText("Score: "+score);      
+  localStorage.setItem("score", score);
+});
+
+
+ 
+
+//Score 
+var score = 0;
+var score_txt = new sjs.Text("Score: 0", 21, "black");
+score_txt.fixed = true;
+sjs.onHit("player","powerUp", function(x,y){
+	 score = score + 1;
+     score_txt.setText("Score: "+score);      
+    localStorage.setItem("score", score);
+   if(score>= 15){
+     	window.location = "win.html";
+ }
+ y.destroy();
+  });
+
+
+
+//Enemies
+setInterval(function(){
+var x = Math.floor(Math.random() * 601);
+var y = Math.floor(Math.random() * 501);
+var enemy = new sjs.Image("Images/bomb.png")
+ 		enemy.type = "enemy";
+ 		enemy.setSize(50,50);
+ 		enemy.noBounds = true;
+ 		enemy.friction = 0;
+    enemy.moveTo(x,y);
+    enemy.pushDown(4);
+  },1500);
+
+sjs.onHit("player","enemy", function(x,y){
+    y.destroy();
+    x.destroy();
+    window.location = "gamover.html";
+});
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> Custom Game </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>

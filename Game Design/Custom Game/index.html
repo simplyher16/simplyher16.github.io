@@ -1,0 +1,28 @@
+<html>
+<head>
+<title> Custom Game </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",500,400);
+
+var index_txt = new sjs.Text("Use the right and left arrow keys to move the player.Catch coins to earn points. Watch out for falling bombs!", 25, "lightblue");
+
+var start_btn = new sjs.Button("Play!", function(){
+	window.location = "custom game.html";
+});
+
+start_btn.center();
+
+var info_text = new sjs.Text("Created by A.R",25, "black");
+info_text.bottom().centerH();
+
+} //end start
+</script>
+</head>
+<body onload="start()">
+<h1> Custom Game </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>
